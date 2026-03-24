@@ -1,6 +1,6 @@
 import cv2
 import csv
-import time
+import time  # Handles the timing for logging
 from datetime import datetime
 
 # Load the face detection model
@@ -11,19 +11,23 @@ cap = cv2.VideoCapture(0)
 
 def log_attendance(status):
     """Saves the detection event to a CSV file"""
-    with open('attendance.csv', mode='a', newline='') as file:
-        writer = csv.writer(file)
-        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        writer.writerow(["Student_User", timestamp, status])
+    try:
+        with open('attendance.csv', mode='a', newline='') as file:
+            writer = csv.writer(file)
+            current_time = datetime.now().strftime('%H:%M:%S')
+            writer.writerow(["Student_User", current_time, status])
+    except Exception as e:
+        print(f"Logging error: {e}")
 
 print("System Starting... Press 'q' to exit.")
 
-# To prevent flooding the CSV, we only log every few seconds
-last_log_time = time.time()
+# Initialize the timer
+last_log_time = time.time() 
 
 while True:
     ret, frame = cap.read()
-    if not ret: break
+    if not ret: 
+        break
 
     frame = cv2.flip(frame, 1)
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -44,7 +48,7 @@ while True:
             status = "Distracted"
             color = (0, 255, 255)
 
-        # Log to CSV every 5 seconds if a face is present
+        # Log to CSV every 5 seconds
         if time.time() - last_log_time > 5:
             log_attendance(status)
             last_log_time = time.time()
