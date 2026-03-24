@@ -9,3 +9,9 @@ Head Pose Estimation: Calculating pitch, yaw, and roll to determine the directio
 Eye-Tracking Integration: (Optional, depending on your build) Analyzing iris movement to refine focus accuracy.
 
 Attention Scoring: A custom logic layer that translates "time spent looking at target" into a percentage-based engagement metric.
+
+
+## How to Setup
+1. Install OpenCV: `pip install opencv-python`
+2. Run the script: `python main.py`
+3. Press 'q' to stop the camera and save the data.
